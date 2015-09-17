@@ -12,6 +12,7 @@ All important aspects of postman are migrated as server side application.
 - Tomcat 7+
 
 ## Credits
-- Postman chrome plugin -> html/css/js for rendering purpose.
+- Postman chrome plugin -> html/css/js for rendering purpose. (https://github.com/postmanlabs/postman-app-support)
+- Landing page by ScoopThemes--> (https://github.com/ScoopThemes/coming-soon)
 - CORS http proxy and web application -> Amit Desai
 
