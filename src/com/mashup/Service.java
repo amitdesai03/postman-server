@@ -1,55 +1,119 @@
 package com.mashup;
 
-import javax.ws.rs.Consumes;
+import java.util.List;
+import java.util.Map.Entry;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientResponse;
+import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.filter.GZIPContentEncodingFilter;
 
-@Path("/apicall")
+@Path("/proxy")
 public class Service {
+
 	@POST
-	@Consumes("application/json")
-	@Produces("application/json")
-	public APICallResponse call(APICallRequest request) {
-		APICallResponse apiCallResponse = new APICallResponse();
-		try {
+	@Path("{url : .+}")
+	public Response post(@Context HttpHeaders headers,
+			@Context UriInfo uriInfo, String requestBody) {
+		String url = processURL(uriInfo);
 
-			Client client = Client.create();
-			WebResource webResource = client.resource(request.url);
-			WebResource.Builder builder = webResource.header(
-					"customRequestedBy", "mashup");
-			if (request.httpHeaders != null) {
-				for (String key : request.httpHeaders.keySet()) {
-					builder = builder.header(key, request.httpHeaders.get(key));
-				}
-			}
+		ClientResponse response = getBuilder(url, headers).method(
+				HttpMethod.POST, ClientResponse.class, requestBody);
 
-			ClientResponse response = null;
-			if (request.type.equalsIgnoreCase("get")) {
-				response = builder.get(ClientResponse.class);
-			} else if (request.type.equalsIgnoreCase("post")) {
-				response = builder.post(ClientResponse.class, request.json);
-			}
-
-			if (response.getStatus() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ response.getStatus());
-			}
-
-			apiCallResponse.json = response.getEntity(String.class);
-			apiCallResponse.httpHeaders = response.getHeaders();
-			System.out.println("Output from Server .... \n");
-			System.out.println(apiCallResponse.json);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return apiCallResponse;
+		return clientResponseToResponse(response);
 	}
 
+	@GET
+	@Path("{url : .+}")
+	public Response get(@Context HttpHeaders headers, @Context UriInfo uriInfo) {
+		String url = processURL(uriInfo);
+
+		ClientResponse response = getBuilder(url, headers).method(
+				HttpMethod.GET, ClientResponse.class);
+
+		return clientResponseToResponse(response);
+	}
+
+	@PUT
+	@Path("{url : .+}")
+	public Response put(@Context HttpHeaders headers, String requestBody,
+			@Context UriInfo uriInfo) {
+		String url = processURL(uriInfo);
+
+		ClientResponse response = getBuilder(url, headers).method(
+				HttpMethod.PUT, ClientResponse.class, requestBody);
+
+		return clientResponseToResponse(response);
+	}
+
+	@DELETE
+	@Path("{url : .+}")
+	public Response delete(@Context HttpHeaders headers,
+			@Context UriInfo uriInfo) {
+		String url = processURL(uriInfo);
+
+		ClientResponse response = getBuilder(url, headers).method(
+				HttpMethod.DELETE, ClientResponse.class);
+
+		return clientResponseToResponse(response);
+	}
+
+	private static Response clientResponseToResponse(ClientResponse r) {
+		// copy the status code
+		ResponseBuilder rb = Response.status(r.getStatus());
+		// copy all the headers
+		for (Entry<String, List<String>> entry : r.getHeaders().entrySet()) {
+			for (String value : entry.getValue()) {
+				rb.header(entry.getKey(), value);
+			}
+		}
+		// copy the entity
+		rb.entity(r.getEntity(new GenericType<String>() {
+		}));
+		// return the response
+		return rb.build();
+	}
+
+	private WebResource.Builder getBuilder(String url, HttpHeaders headers) {
+		Client client = Client.create();
+		client.addFilter(new GZIPContentEncodingFilter(false));
+		WebResource webResource = client.resource(url);
+		WebResource.Builder builder = webResource.getRequestBuilder();
+
+		for (String key : headers.getRequestHeaders().keySet()) {
+			List<String> values = headers.getRequestHeaders().get(key);
+			String finalValue = "";
+			for (String value : values) {
+				finalValue += value + ",";
+			}
+			finalValue = finalValue.substring(0, finalValue.length() - 1);
+			builder = builder.header(key, finalValue);
+		}
+		return builder;
+	}
+
+	private static String processURL(UriInfo uriInfo) {
+		String path = uriInfo.getRequestUri().getPath();
+		path = path.substring(path.indexOf("proxy") + 6);
+		path = path.replace("//", "://");
+
+		String query = uriInfo.getRequestUri().getRawQuery();
+		if (query != null && !query.trim().equals("")) {
+			path = path + "?" + query;
+		}
+		return path;
+	}
 }
