@@ -8,10 +8,10 @@ So a http proxy is needed in between by pass CORS restrictions.
 All important aspects of postman are migrated as server side application.
 
 ## Environment
-Java 1.7+
-Tomcat 7+
+- Java 1.7+
+- Tomcat 7+
 
 ## Credits
--Postman chrome plugin -> html/css/js for rendering purpose.
--CORS http proxy and web application -> Amit Desai
+- Postman chrome plugin -> html/css/js for rendering purpose.
+- CORS http proxy and web application -> Amit Desai
 
