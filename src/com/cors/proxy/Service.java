@@ -1,4 +1,4 @@
-package com.mashup;
+package com.cors.proxy;
 
 import java.util.List;
 import java.util.Map.Entry;
