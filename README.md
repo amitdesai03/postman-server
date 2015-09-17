@@ -5,9 +5,13 @@ Runs as independent web application using CORS proxy and not as chrome plugin
 
 ## About
 Postman chrome plugin is excellent rest client. 
-Because of that you are required to install plugin in browser.
-With this postman in cloud application, you can avoid any installations.
-
+However you are required to install plugin in browser.
+With postman in cloud application, you can avoid any installations.
+    - Further enhancements are pending
+        - to store req/res on cloud instead of chrome local store
+        - user based access to handle privacy
+        - support for non-chrome browsers
+    
 ## Environment
 - Java 1.7+
 - Tomcat 7+
