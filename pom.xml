@@ -4,30 +4,6 @@
   <artifactId>postman-server</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>war</packaging>
-  <repositories>
-		<repository>
-			<id>eap</id>
-			<url>http://maven.repository.redhat.com/techpreview/all</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>eap</id>
-			<url>http://maven.repository.redhat.com/techpreview/all</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -96,7 +72,7 @@
 				          <warSourceDirectory>WebContent</warSourceDirectory>
 				          <failOnMissingWebXml>false</failOnMissingWebXml>
 				          <outputDirectory>webapps</outputDirectory>
-				          <warName>ROOT</warName>
+				          <warName>postman-server</warName>
 				        </configuration>
 				      </plugin>
 				</plugins>
