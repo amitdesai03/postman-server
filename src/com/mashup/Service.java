@@ -2,6 +2,7 @@ package com.mashup;
 
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,13 +14,21 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandler;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.GenericType;
 import com.sun.jersey.api.client.WebResource;
+import com.sun.jersey.api.client.config.ClientConfig;
+import com.sun.jersey.api.client.config.DefaultClientConfig;
+import com.sun.jersey.api.client.filter.ClientFilter;
 import com.sun.jersey.api.client.filter.GZIPContentEncodingFilter;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 
 @Path("/proxy")
 public class Service {
@@ -88,9 +97,16 @@ public class Service {
 	}
 
 	private WebResource.Builder getBuilder(String url, HttpHeaders headers) {
-		Client client = Client.create();
+		LoggingFilter logging = new LoggingFilter(Logger.getAnonymousLogger());
+		ClientConfig config = new DefaultClientConfig();
+        config.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, true);
+		Client client = Client.create(config);
 		client.addFilter(new GZIPContentEncodingFilter(false));
+		client.setFollowRedirects(true);
 		WebResource webResource = client.resource(url);
+		webResource.addFilter(logging);
+		webResource.addFilter(new RedirectFilter());
+		
 		WebResource.Builder builder = webResource.getRequestBuilder();
 
 		for (String key : headers.getRequestHeaders().keySet()) {
@@ -115,5 +131,26 @@ public class Service {
 			path = path + "?" + query;
 		}
 		return path;
+	}
+	
+	class RedirectFilter extends ClientFilter {
+
+	    @Override
+	    public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
+	        ClientHandler ch = getNext();
+	        ClientResponse resp = ch.handle(cr);
+
+	        if (resp.getStatusInfo().getFamily() != Response.Status.Family.REDIRECTION) {
+	            return resp;
+	        }
+	        else {
+	            // try location
+	            String redirectTarget = resp.getHeaders().getFirst("Location");
+	            cr.setURI(UriBuilder.fromUri(redirectTarget).build());
+	            return ch.handle(cr);
+	        }
+
+	    }
+
 	}
 }
