@@ -14,9 +14,7 @@
 </head>
 <body>
 <div id="container" class="clearfix">
-<div id="sidebar-footer">
-    
-</div>
+
 <div id="sidebar-toggle">
     <img src="img/tri_arrow_left.png"/>
 </div>
@@ -27,17 +25,7 @@
                 POSTMAN SERVER (Unofficial)
             </a>
         </div>
-        <div id="external-links">
-            <ul>
-                <li>
-                    <a  rel="tooltip" data-placement="bottom"
-                        data-original-title="Download all data" id="download-all-data"><img src="img/download.png"/>
-                    </a>
-                </li>
-                
-               
-            </ul>
-        </div>
+        
     </div>
     <div id="sidebar-sections" class="clearfix">
         <div id="history-options" class="section-options">
@@ -1078,7 +1066,7 @@
 
                 <div class="controls">
                     <select class="medium" name="use-postman-proxy" id="use-postman-proxy">
-                        <option value="true">Yes</option>
+                        <option value="true" selected="selected">Yes</option>
                         <option value="false">No</option>
                     </select>
 
@@ -1095,7 +1083,7 @@
                 <label class="control-label" for="postman-proxy-url">Postman proxy URL</label>
 
                 <div class="controls">
-                    <input type="text" name="postman-proxy-url" id="postman-proxy-url"/>
+                    <input type="text" name="postman-proxy-url" id="postman-proxy-url" value="/postman-server/http/proxy//"/>
                 </div>
             </div>
         </form>

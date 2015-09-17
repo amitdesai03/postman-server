@@ -33,6 +33,13 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 @Path("/proxy")
 public class Service {
 
+	private String[] bannedHeaders = { "accept-charset", "accept-encoding",
+			"access-control-request-headers", "access-control-request-method",
+			"connection", "content-length", "cookie", "cookie2",
+			"content-transfer-encoding", "date", "expect", "host",
+			"keep-alive", "origin", "referer", "te", "trailer",
+			"transfer-encoding", "upgrade", "user-agent", "via" };
+
 	@POST
 	@Path("{url : .+}")
 	public Response post(@Context HttpHeaders headers,
@@ -99,24 +106,32 @@ public class Service {
 	private WebResource.Builder getBuilder(String url, HttpHeaders headers) {
 		LoggingFilter logging = new LoggingFilter(Logger.getAnonymousLogger());
 		ClientConfig config = new DefaultClientConfig();
-        config.getProperties().put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, true);
+		config.getProperties()
+				.put(ClientConfig.PROPERTY_FOLLOW_REDIRECTS, true);
 		Client client = Client.create(config);
 		client.addFilter(new GZIPContentEncodingFilter(false));
 		client.setFollowRedirects(true);
 		WebResource webResource = client.resource(url);
 		webResource.addFilter(logging);
 		webResource.addFilter(new RedirectFilter());
-		
+
 		WebResource.Builder builder = webResource.getRequestBuilder();
 
-		for (String key : headers.getRequestHeaders().keySet()) {
-			List<String> values = headers.getRequestHeaders().get(key);
-			String finalValue = "";
-			for (String value : values) {
-				finalValue += value + ",";
+		if (headers != null) {
+			for (String key : headers.getRequestHeaders().keySet()) {
+				List<String> values = headers.getRequestHeaders().get(key);
+				String finalValue = "";
+				for (String value : values) {
+					finalValue += value + ",";
+				}
+				finalValue = finalValue.substring(0, finalValue.length() - 1);
+
+				if (key.startsWith("postman-")) {
+					key = key.substring(key.indexOf("postman-") + 8);
+				}
+
+				builder = builder.header(key, finalValue);
 			}
-			finalValue = finalValue.substring(0, finalValue.length() - 1);
-			builder = builder.header(key, finalValue);
 		}
 		return builder;
 	}
@@ -132,25 +147,26 @@ public class Service {
 		}
 		return path;
 	}
-	
+
 	class RedirectFilter extends ClientFilter {
 
-	    @Override
-	    public ClientResponse handle(ClientRequest cr) throws ClientHandlerException {
-	        ClientHandler ch = getNext();
-	        ClientResponse resp = ch.handle(cr);
+		@Override
+		public ClientResponse handle(ClientRequest cr)
+				throws ClientHandlerException {
+			ClientHandler ch = getNext();
+			ClientResponse resp = ch.handle(cr);
 
-	        if (resp.getStatusInfo().getFamily() != Response.Status.Family.REDIRECTION) {
-	            return resp;
-	        }
-	        else {
-	            // try location
-	            String redirectTarget = resp.getHeaders().getFirst("Location");
-	            cr.setURI(UriBuilder.fromUri(redirectTarget).build());
-	            return ch.handle(cr);
-	        }
+			if (resp.getStatusInfo().getFamily() != Response.Status.Family.REDIRECTION) {
+				return resp;
+			} else {
+				// try location
+				String redirectTarget = resp.getHeaders().getFirst("Location");
+				cr.setURI(UriBuilder.fromUri(redirectTarget).build());
+				return ch.handle(cr);
+			}
 
-	    }
+		}
 
 	}
+
 }
