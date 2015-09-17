@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/amitdesai03/postman-server.svg)](https://travis-ci.org/amitdesai03/postman-server)
 
 # postman-server
 Runs as independent web application using CORS proxy and not as chrome plugin
