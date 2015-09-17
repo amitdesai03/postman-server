@@ -11,5 +11,7 @@ All important aspects of postman are migrated as server side application.
 Java 1.7+
 Tomcat 7+
 
-
+## Credits
+-Postman chrome plugin -> html/css/js for rendering purpose.
+-CORS http proxy and web application -> Amit Desai
 
