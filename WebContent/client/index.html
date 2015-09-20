@@ -465,7 +465,7 @@
         </div>
     </div>
 
-    <div id="request-preview">
+    <!-- <div id="request-preview">
         <div id="request-preview-header" class="dropdown">
             <span class="request-preview-header-title">Preview</span>
             <a data-toggle="dropdown-toggle" class="dropdown-toggle request-preview-header-limitations">
@@ -478,7 +478,7 @@
         </div>
         <div id="request-preview-content">
         </div>
-    </div>
+    </div> -->
 
 <div id="request-actions" class="clearfix">
     <div id="request-actions-primary">
@@ -489,9 +489,9 @@
         <button class="btn"
                 id="update-request-in-collection">Save
         </button>
-        <button class="btn"
+        <!--<button class="btn"
                 data-action="preview"
-                id="preview-request">Preview
+                id="preview-request">Preview -->
         </button>
         <button class="btn"
                 id="add-to-collection"
@@ -549,7 +549,7 @@
                     <div id="response-formatting" class="btn-group clearfix" data-toggle="buttons-radio">
                         <a data-type="parsed" class="btn">Pretty</a>
                         <a data-type="raw" class="btn">Raw</a>
-                        <a data-type="preview" class="btn">Preview</a>
+                        <!-- <a data-type="preview" class="btn">Preview</a> -->
                     </div>
                     <div id="response-actions" class="clearfix">
                         <a class="btn"
@@ -615,9 +615,9 @@
                     <div id="response-as-text">
                         <textarea id="code-data-raw"></textarea>
                     </div>
-                    <div id="response-as-preview">
+                    <!-- <div id="response-as-preview">
                         <iframe src=""></iframe>
-                    </div>
+                    </div> -->
                     <div id="response-as-image"></div>
                 </div>
             </div>
@@ -1050,7 +1050,7 @@
                 </div>
             </div>
 
-            <div class="control-group">
+            <!-- <div class="control-group">
                 <label class="control-label" for="disable-iframe-preview">Disable IFrame Preview</label>
 
                 <div class="controls">
@@ -1059,7 +1059,7 @@
                         <option value="false">No</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
 
             <div class="control-group">
                 <label class="control-label" for="use-postman-proxy">Use Postman proxy?</label>
@@ -1104,10 +1104,10 @@
                 <td>New request</td>
                 <td><strong>Alt + n</strong></td>
             </tr>
-            <tr>
+            <!-- <tr>
                 <td>Preview request</td>
                 <td><strong>Alt + p</strong></td>
-            </tr>
+            </tr> -->
             <tr>
                 <td>Edit URL</td>
                 <td><strong>Backspace</strong></td>
@@ -1186,5 +1186,6 @@
 <script type="text/javascript" src="js/handlebars.js"></script>
 <script type="text/javascript" src="js/templates.js"></script>
 <script type="text/javascript" src="js/requester.min.js"></script>
+<script type="text/javascript" src="js/serverDB.js"></script>
 </body>
 </html>
