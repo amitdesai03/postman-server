@@ -37,7 +37,7 @@ serverDB.db.Transaction.ObjectStore={
                 }
             }
         };
-        xmlhttp.open("POST", "../http/db/"+this.collectionType+"/" + "PUT", true);
+        xmlhttp.open("POST", "http/db/"+this.collectionType+"/" + "PUT", true);
         if(a == undefined || a == null)
         	xmlhttp.send();
         else
@@ -57,7 +57,7 @@ serverDB.db.Transaction.ObjectStore={
                 }
             }
         };
-        xmlhttp.open("POST", "../http/db/"+this.collectionType+"/" + "GET?key="+a, true);
+        xmlhttp.open("POST", "http/db/"+this.collectionType+"/" + "GET?key="+a, true);
         if(a == undefined || a == null)
         	xmlhttp.send();
         else
@@ -97,7 +97,7 @@ serverDB.db.Transaction.ObjectStore={
     		            }
     		        };
     		        
-    		        xmlhttp.open("POST", "../http/db/"+this.collectionType+"/INDEX?indexOn="+this.indexOn+"&key=collectionId&value=" + openCursorOn.lower, true);
+    		        xmlhttp.open("POST", "http/db/"+this.collectionType+"/INDEX?indexOn="+this.indexOn+"&key=collectionId&value=" + openCursorOn.lower, true);
     		        xmlhttp.send();
     		        
     				return newResult;
@@ -137,7 +137,7 @@ serverDB.db.Transaction.ObjectStore={
                 }
             }
         };
-        xmlhttp.open("POST", "../http/db/"+this.collectionType+"/INDEX", true);
+        xmlhttp.open("POST", "http/db/"+this.collectionType+"/INDEX", true);
         xmlhttp.send();
         
 		return newResult;
@@ -155,7 +155,7 @@ serverDB.db.Transaction.ObjectStore={
                 }
             }
         };
-        xmlhttp.open("POST", "../http/db/"+this.collectionType+"/DELETE?key=" + a, true);
+        xmlhttp.open("POST", "http/db/"+this.collectionType+"/DELETE?key=" + a, true);
         xmlhttp.send();
     	return newResult;
     },
@@ -172,7 +172,7 @@ serverDB.db.Transaction.ObjectStore={
                 }
             }
         };
-        xmlhttp.open("POST", "../http/db/"+this.collectionType+"/CLEAR", true);
+        xmlhttp.open("POST", "http/db/"+this.collectionType+"/CLEAR", true);
         xmlhttp.send();
     	return newResult;
     }

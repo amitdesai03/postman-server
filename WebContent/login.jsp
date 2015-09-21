@@ -31,10 +31,53 @@
       <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
       <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+    <script src="https://cdn.auth0.com/js/lock-7.9.min.js"></script>
+	
+    
 </head>
 
 <body>
+	<script type="text/javascript">
+	<%!
 
+    // Converts a relative path into a full path
+    // Taken from http://stackoverflow.com/posts/5212336/revisions
+   public String buildUrl(HttpServletRequest request, String relativePath) {
+
+
+    String scheme      =    request.getScheme();        // http
+    String serverName  =    request.getServerName();    // hostname.com
+    int serverPort     =    request.getServerPort();    // 80
+    String contextPath =    request.getContextPath();   // /mywebapp
+
+    // Reconstruct original requesting URL
+    StringBuffer url =  new StringBuffer();
+    url.append(scheme).append("://").append(serverName);
+
+    if ((serverPort != 80) && (serverPort != 443)) {
+        url.append(":").append(serverPort);
+    }
+
+    url.append(contextPath).append(relativePath);
+
+    return url.toString();
+
+    }
+ %>
+	  var lock = new Auth0Lock('IaI1zx6ijeU04zGFlYHkSKXnKAYFYWdp', 'misc.auth0.com');
+	  
+	  
+	  function signin() {
+	        lock.show({
+	            callbackURL: '<%= buildUrl(request, "/callback") %>'
+	          , responseType: 'code'
+	          , authParams: {
+	              state: '${state}'
+	            , scope: 'openid profile'
+	            }
+	        });
+	      }
+	</script>
     <div class="cloud floating">
         <img src="assets/img/cloud.png" alt="Scoop Themes">
     </div>
@@ -56,13 +99,15 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-12 col-lg-12">
-                    <h1>Postman Server</h1>
-                    <br/>
+                    <h1>Postman Cloud</h1>
                      <h4>This application is not officially supported by <a href="https://www.getpostman.com">getpostman.com</a></h4>
-                    <br/>
-                    <h2 class="subtitle"><input type="button" onclick="location.href = 'client/index.html';" value="Launch" class="btn btn-theme"></h2>
-                    <br/>
-             
+                   <br/>
+                   <% if ( request.getParameter("error") != null ) { %>
+				        <%-- TODO Escape and encode ${param.error} properly. It can be done using jstl c:out. --%>
+				        <span style="color: red;">${param.error}</span>
+				    <% } %>
+                    <button onclick="signin()" class="btn btn-theme">Login</button>
+
                    
                 </div>
                 
@@ -117,7 +162,7 @@ function register($form) {
     });
 }
     </script>
-
+	
 </body>
 
 </html>

@@ -33,13 +33,6 @@ import com.sun.jersey.api.client.filter.LoggingFilter;
 @Path("/proxy")
 public class Service {
 
-	private String[] bannedHeaders = { "accept-charset", "accept-encoding",
-			"access-control-request-headers", "access-control-request-method",
-			"connection", "content-length", "cookie", "cookie2",
-			"content-transfer-encoding", "date", "expect", "host",
-			"keep-alive", "origin", "referer", "te", "trailer",
-			"transfer-encoding", "upgrade", "user-agent", "via" };
-
 	@POST
 	@Path("{url : .+}")
 	public Response post(@Context HttpHeaders headers,

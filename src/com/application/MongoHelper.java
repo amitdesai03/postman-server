@@ -1,4 +1,4 @@
-package com.meshplate;
+package com.application;
 
 import java.net.UnknownHostException;
 
@@ -24,14 +24,15 @@ public class MongoHelper {
 	}
 
 	public String findAll(String collectionType, String key, String value,
-			String indexOn) {
+			String indexOn, String email) {
 		DB db = mongoClient.getDB(DB_NAME);
 		DBCollection collection = db.getCollection(collectionType);
 		DBCursor cursor = null;
+		BasicDBObject searchQuery = new BasicDBObject().append("_email", email);
 		if (key == null || key.trim().equals("")) {
-			cursor = collection.find();
+			cursor = collection.find(searchQuery);
 		} else {
-			BasicDBObject searchQuery = new BasicDBObject().append(key, value);
+			searchQuery = searchQuery.append(key, value);
 			cursor = collection.find(searchQuery);
 		}
 		if (indexOn != null) {
@@ -48,7 +49,7 @@ public class MongoHelper {
 		return result;
 	}
 
-	public void insert(String collectionType, String data) {
+	public void insert(String collectionType, String data, String email) {
 
 		DB db = mongoClient.getDB(DB_NAME);
 		DBCollection collection = db.getCollection(collectionType);
@@ -60,23 +61,13 @@ public class MongoHelper {
 			dbObj.append("_id", dbObj.get("id"));
 
 		}
+		if(!data.contains("_email")){
+			dbObj.append("_email", email);
+		}
 		collection.save(dbObj);
 	}
-
-	// public void update(String collectionType, String data) {
-	//
-	// DB db = mongoClient.getDB(DB_NAME);
-	// DBCollection collection = db.getCollection(collectionType);
-	// BasicDBObject newDocument = new BasicDBObject();
-	// newDocument.append("$set", new BasicDBObject().append("clients", 110));
-	//
-	// BasicDBObject searchQuery = new BasicDBObject().append("hosting",
-	// "hostB");
-	//
-	// collection.update(searchQuery, newDocument);
-	// }
-
-	public void delete(String collectionType, String id) {
+	
+	public void delete(String collectionType, String id, String email) {
 
 		DB db = mongoClient.getDB(DB_NAME);
 		DBCollection collection = db.getCollection(collectionType);
@@ -85,7 +76,7 @@ public class MongoHelper {
 		if (id != null) {
 			searchQuery.put("_id", id);
 		}
-
+		searchQuery.put("_email", email);
 		collection.remove(searchQuery);
 	}
 
@@ -93,10 +84,10 @@ public class MongoHelper {
 		return mh;
 	}
 
-	public String findOne(String collectionType, String key) {
+	public String findOne(String collectionType, String key, String email) {
 		DB db = mongoClient.getDB(DB_NAME);
 		DBCollection collection = db.getCollection(collectionType);
-		BasicDBObject searchQuery = new BasicDBObject().append("_id", key);
+		BasicDBObject searchQuery = new BasicDBObject().append("_id", key).append("_email", email);
 		DBCursor cursor = collection.find(searchQuery);
 		String result = "";
 		if (cursor.hasNext()) {

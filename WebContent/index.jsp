@@ -11,6 +11,7 @@
     <link rel="stylesheet" type="text/css" href="codemirror/theme/eclipse.css"/>
     <link rel="stylesheet" type="text/css" href="css/styles.css"/>
     <link rel="stylesheet" type="text/css" href="css/keyvalueeditor.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body>
 <div id="container" class="clearfix">
@@ -103,10 +104,14 @@
                     </div>
                 </div>
             </div>
-            <div id="broadcasts" class="btn-group">
+            <!-- <div id="broadcasts" class="btn-group">
                 <a data-toggle="dropdown" rel="tooltip" id="broadcasts-count">0</a>
                 <ul class="dropdown-menu">
                 </ul>
+            </div> -->
+            <div id="broadcasts" style="color:#0088CC;font-size:16px;" >
+                <%= session.getAttribute("name") %>&nbsp;<img height="7" width="21" src="<%= session.getAttribute("picUrl") %>" style="vertical-align: middle;"/>
+                <a href="logout"><i class="fa fa-sign-out fa-lg"></i></a>
             </div>
             <div class="preferences">
                 <a data-toggle="modal" href="#modal-shortcuts"

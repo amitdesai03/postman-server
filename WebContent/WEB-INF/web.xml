@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
-  <display-name>postman-server</display-name>
-  <welcome-file-list>
-    <welcome-file>/index.html</welcome-file>
-  </welcome-file-list>
-  
-  <servlet>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>postman-server</display-name>
+
+	<servlet>
 		<servlet-name>Jersey Web Application</servlet-name>
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
 		<load-on-startup>1</load-on-startup>
@@ -14,4 +14,73 @@
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/http/*</url-pattern>
 	</servlet-mapping>
+	<servlet>
+        <servlet-name>Authenticate</servlet-name>
+        <servlet-class>com.auth0.AuthenticateServlet</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>Authenticate</servlet-name>
+        <url-pattern>/authenticate</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>com.auth0.LogoutServlet</servlet-class>
+    </servlet>
+	<servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Credential</servlet-name>
+        <servlet-class>com.auth0.CredentialServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Credential</servlet-name>
+        <url-pattern>/credential</url-pattern>
+    </servlet-mapping>
+	<servlet>
+		<servlet-name>RedirectCallback</servlet-name>
+		<servlet-class>com.auth0.Auth0ServletCallback</servlet-class>
+		<init-param>
+			<param-name>auth0.redirect_on_success</param-name>
+			<param-value>/credential</param-value>
+		</init-param>
+		<init-param>
+			<param-name>auth0.redirect_on_error</param-name>
+			<param-value>/authenticate</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>RedirectCallback</servlet-name>
+		<url-pattern>/callback</url-pattern>
+	</servlet-mapping>
+
+	<filter>
+		<filter-name>AuthFilter</filter-name>
+		<filter-class>com.auth0.Auth0Filter</filter-class>
+		<init-param>
+			<param-name>auth0.redirect_on_authentication_error</param-name>
+			<param-value>/authenticate</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthFilter</filter-name>
+		<url-pattern>/</url-pattern>
+	</filter-mapping>
+
+
+	<context-param>
+		<param-name>auth0.client_id</param-name>
+		<param-value>IaI1zx6ijeU04zGFlYHkSKXnKAYFYWdp</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>auth0.client_secret</param-name>
+		<param-value>4Dpt0-yLzpecZrgWJT3tBtLYid5StBD_UZT2XrBorYOIAmqptVaJiN3_-UUvhLOX</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>auth0.domain</param-name>
+		<param-value>misc.auth0.com</param-value>
+	</context-param>
 </web-app>
