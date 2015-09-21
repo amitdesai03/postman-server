@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8"/>
-    <title>Postman Server</title>
+    <title>Postman Cloud</title>
     <link rel="stylesheet" type="text/css" href="css/custom-theme/jquery-ui-1.9.2.custom.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="css/bootstrap-modal.css"/>
@@ -32,7 +32,7 @@ if(session.getAttribute("name")==null || ((String)(session.getAttribute("name"))
     <div id="header" class="clearfix">
         <div id="logo">
             <a target="_blank" style="font-size:20px;color:grey;font-weight: bold;">
-                POSTMAN SERVER (Unofficial)
+                POSTMAN CLOUD (Unofficial)
             </a>
         </div>
         

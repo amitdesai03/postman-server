@@ -15,7 +15,7 @@
     <meta name="revisit-after" content="2 days">
     <link rel="shortcut icon" href="assets/img/favicon.png">
 
-    <title>Postman Server</title>
+    <title>Postman Cloud</title>
 
     <!-- Bootstrap -->
     <link href="assets/css/bootstrap.css" rel="stylesheet">
