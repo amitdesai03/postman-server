@@ -14,6 +14,15 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
 <body>
+<% 
+if(session.getAttribute("name")==null || ((String)(session.getAttribute("name"))).trim().equals(""))
+{
+	// New location to be redirected
+	   String site = new String("authenticate");
+	   response.setStatus(response.SC_MOVED_TEMPORARILY);
+	   response.setHeader("Location", site); 
+}
+%>
 <div id="container" class="clearfix">
 
 <div id="sidebar-toggle">

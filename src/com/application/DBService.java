@@ -35,7 +35,7 @@ public class DBService {
 
 		String email = (String) req.getSession().getAttribute("email");
 		if (email == null || email.trim().equals("")) {
-			Response.temporaryRedirect(new URI("/authenticate"));
+			return Response.temporaryRedirect(new URI("/authenticate")).build();
 		}
 
 		Response response = null;
