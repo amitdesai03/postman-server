@@ -17,6 +17,7 @@
 	<servlet>
         <servlet-name>Authenticate</servlet-name>
         <servlet-class>com.auth0.AuthenticateServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
 	<servlet-mapping>
         <servlet-name>Authenticate</servlet-name>
