@@ -1,17 +1,19 @@
 [![Build Status](https://travis-ci.org/amitdesai03/postman-server.svg)](https://travis-ci.org/amitdesai03/postman-server)
 
 # postman-server
-Runs as independent web application using CORS proxy and not as chrome plugin
+Runs as independent web application and not as chrome plugin
 
 ## About
 Postman chrome plugin is excellent rest client. 
 However you are required to install plugin in browser.
 With postman in cloud application, you can avoid any installations.
-    - Further enhancements are pending
-        - to store req/res on cloud instead of chrome local store
-        - user based access to handle privacy
-        - support for non-chrome browsers
-    
+    - support for non-chrome browsers
+
+## Features
+- Store request and response on server side instead of local chrome db.
+- History/collections/environment are stored seperatly for each user 
+- Social OAuth login
+
 ## Environment
 - Java 1.7+
 - Tomcat 7+
@@ -26,29 +28,7 @@ With postman in cloud application, you can avoid any installations.
 Postman cannot be easily migrated to an stand alone web application due to CORS(Cross-Origin Resource Sharing) limitations.
 So a http proxy is needed in between by pass CORS restrictions.
 
-Proxy also allows you to send headers restricted by Chrome and the XMLHttpRequest specification. Due to these restrictions the following headers are blocked:
-
-- Accept-Charset
-- Accept-Encoding
-- Access-Control-Request-Headers
-- Access-Control-Request-Method
-- Connection
-- Content-Length
-- Cookie
-- Cookie 2
-- Content-Transfer-Encoding
-- Date
-- Expect
-- Host
-- Keep-Alive
-- Origin
-- Referer
-- TE
-- Trailer
-- Transfer-Encoding
-- Upgrade
-- User-Agent
-- Via
+Proxy also allows you to send headers restricted by Chrome and the XMLHttpRequest specification.
 
 These restrictions probably make sense for protecting the user agent but make testing API backends difficult.
 Now you can send all the headers mentioned above. Postman does this by automatically prepending 'Postman-' to the restricted headers. The proxy strips out the 'Postman-' marker and sends the header forwards.
@@ -57,3 +37,4 @@ Now you can send all the headers mentioned above. Postman does this by automatic
  Please specify below argument on server startup
  
  `JAVA_OPTS_EXT="-DMONGO_CONNECTION_URL=mongodb://<username>:<password>@ds029107.mongolab.com:29107/<db-name>"`
+
