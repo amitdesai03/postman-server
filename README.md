@@ -52,3 +52,8 @@ Proxy also allows you to send headers restricted by Chrome and the XMLHttpReques
 
 These restrictions probably make sense for protecting the user agent but make testing API backends difficult.
 Now you can send all the headers mentioned above. Postman does this by automatically prepending 'Postman-' to the restricted headers. The proxy strips out the 'Postman-' marker and sends the header forwards.
+ 
+## Startup
+ Please specify below argument on server startup
+ 
+ `JAVA_OPTS_EXT="-DMONGO_CONNECTION_URL=mongodb://<username>:<password>@ds029107.mongolab.com:29107/<db-name>"`

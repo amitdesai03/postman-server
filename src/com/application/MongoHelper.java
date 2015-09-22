@@ -10,13 +10,14 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 
 public class MongoHelper {
-	private static final String CONNECTION_STR = "mongodb://meshplate:meshplate@ds029107.mongolab.com:29107/openshift_5s19ckk4_oimfn8hr";
+	private static String CONNECTION_STR;
 	private static final String DB_NAME = "openshift_5s19ckk4_oimfn8hr";
 	public static MongoClient mongoClient;
 	public static final MongoHelper mh = new MongoHelper();
-
+	
 	static {
 		try {
+			CONNECTION_STR = System.getProperty("MONGO_CONNECTION_URL");
 			mongoClient = new MongoClient(new MongoClientURI(CONNECTION_STR));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
