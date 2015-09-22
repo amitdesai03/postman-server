@@ -68,19 +68,4 @@
 		<url-pattern>/</url-pattern>
 	</filter-mapping>
 
-
-	<context-param>
-		<param-name>auth0.client_id</param-name>
-		<param-value>IaI1zx6ijeU04zGFlYHkSKXnKAYFYWdp</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>auth0.client_secret</param-name>
-		<param-value>4Dpt0-yLzpecZrgWJT3tBtLYid5StBD_UZT2XrBorYOIAmqptVaJiN3_-UUvhLOX</param-value>
-	</context-param>
-
-	<context-param>
-		<param-name>auth0.domain</param-name>
-		<param-value>misc.auth0.com</param-value>
-	</context-param>
 </web-app>
